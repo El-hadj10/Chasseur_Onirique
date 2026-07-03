@@ -26,6 +26,19 @@ describe('HeuristicPlanner', () => {
     expect(p.steps[2]?.rationale.toLowerCase()).toContain('refactor');
   });
 
+  it('routes security prompts to pentest + thinker (no web)', async () => {
+    const p = await new HeuristicPlanner().makePlan('audit the auth module for security issues');
+    expect(p.steps[1]?.suggestedAgents).toContain('pentest');
+    expect(p.steps[1]?.suggestedAgents).toContain('thinker');
+    expect(p.steps[1]?.suggestedAgents).not.toContain('researcher_web');
+    expect(p.steps[1]?.suggestedAgents).not.toContain('researcher_docs');
+  });
+
+  it('routes vulnerability / CVE prompts to pentest', async () => {
+    const p = await new HeuristicPlanner().makePlan('check for known CVE in our deps');
+    expect(p.steps[1]?.suggestedAgents).toContain('pentest');
+  });
+
   it('always flags step 4 with code_reviewer', async () => {
     const p = await new HeuristicPlanner().makePlan('whatever');
     expect(p.steps[3]?.suggestedAgents).toContain('code_reviewer');

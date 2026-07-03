@@ -73,11 +73,17 @@ relies on those exact semantics.
 sequence of codeless TODOs the orchestrator walks through. The orchestrator
 does NOT decide what to do next — it executes the plan.
 
-`HeuristicPlanner.makePlan(prompt)` is a regex-based dispatch: 3 patterns
-(`why/debug`, `refactor/clean`, `compare/recommend`) yield 4 different
-4-step plans. This is deliberately dumb. The `PlannerStrategy` interface is
+`HeuristicPlanner.makePlan(prompt)` is a regex-based dispatch: 4 patterns
+(`why/debug`, `refactor/clean`, `compare/recommend`, and
+`security/audit/pentest/vulnerability/CVE`) yield 4 different 4-step
+plans. This is deliberately dumb. The `PlannerStrategy` interface is
 the seam where a real LLM plugs in later — see the comment "In a real
 orchestrator this would call an LLM."
+
+For `security` / `audit` / `pentest` / `vulnerability` / `secret` / `CVE`
+prompts, step 2's `suggestedAgents` becomes `['pentest', 'thinker']` so
+the pentest agent runs alongside the thinker. This makes the pentest
+discoverable from the main CLI without going through `npm run pentest`.
 
 ### `src/context.ts` — the memory
 
@@ -415,7 +421,26 @@ agent itself; this script adds the cross-run summary.
 
 The default invocation (`npm run pentest`) runs the SAST, deps, and
 secrets checks. To also enable the localhost network probe, set
-`CHASSEUR_ONIRIQUE_PENTEST_NET=1` in the environment.
+`CHASSEUR_ONIRIQUE_PENTEST_NET=1` in the environment. To also
+generate proposed fixes, set `CHASSEUR_ONIRIQUE_PENTEST_FIX=1`.
+
+#### The `--fix` mode (v0.3.1)
+
+When `CHASSEUR_ONIRIQUE_PENTEST_FIX=1`, the pentest agent also invokes
+the **fixer** as a post-processing step after the 4 sub-checks
+complete. The fixer mutates each finding's `proposedFix` field with
+either a unified diff (for deterministic fixes like removing a
+`console.log` line or a deprecated `package.json` dependency) or a
+"Manual action required" note (for anything the regex-based scanner
+cannot reason about safely — secrets, network, risky SAST like `eval`).
+
+The output is a separate file at `docs/pentest/<ISO>-fixes.md`
+(markdown with embedded ````diff` code blocks). The user reviews
+the file and applies manually with `git apply` on the diff blocks.
+The fixer never mutates the project — it only writes the proposed
+fixes file. Exit code is still 1 if there are critical/high findings,
+because the code is still insecure until the user reviews and applies
+the fixes.
 
 ---
 

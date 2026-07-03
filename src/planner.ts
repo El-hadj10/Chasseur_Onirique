@@ -58,6 +58,12 @@ export class HeuristicPlanner implements PlannerStrategy {
     const isInvestigate = /(?:why|debug|investigate|why does|what's wrong)/.test(normalized);
     const isRefactor = /(?:refactor|clean|improve|rewrite)/.test(normalized);
     const isResearch = /(?:compare|recommend|which|best)/.test(normalized);
+    // Tightened to require "security" prefix for "audit"/"review" so that
+    // benign prompts like "audit the access logs" do not trigger the
+    // pentest agent unnecessarily. The cost of a false positive is low
+    // (pentest just walks the repo and finds nothing), but the devlog
+    // should document the trade-off if this gets loosened later.
+    const isSecurity = /(?:security(?:\s+(?:audit|review))?|pentest|vulnerabilit|secrets?|cve)/.test(normalized);
 
     const steps: PlanStep[] = [
       {
@@ -69,16 +75,20 @@ export class HeuristicPlanner implements PlannerStrategy {
       },
       {
         id: 2,
-        title: isResearch
-          ? 'Comparer / rechercher en ligne et dans la doc'
-          : isInvestigate
-            ? 'Diagnostiquer le problème en profondeur'
-            : 'Concevoir la solution',
-        rationale: "Phase de réflexion : on sort le crayon avant le clavier.",
+        title: isSecurity
+          ? 'Audit securite (pentest + synthese)'
+          : isResearch
+            ? 'Comparer / rechercher en ligne et dans la doc'
+            : isInvestigate
+              ? 'Diagnostiquer le probleme en profondeur'
+              : 'Concevoir la solution',
+        rationale: "Phase de reflexion : on sort le crayon avant le clavier.",
         status: 'pending',
-        suggestedAgents: isResearch
-          ? ['researcher_web', 'researcher_docs', 'thinker']
-          : ['thinker'],
+        suggestedAgents: isSecurity
+          ? ['pentest', 'thinker']
+          : isResearch
+            ? ['researcher_web', 'researcher_docs', 'thinker']
+            : ['thinker'],
       },
       {
         id: 3,
