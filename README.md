@@ -95,7 +95,8 @@ Un `thinker` peut être invoqué entre deux steps pour **synthétiser** les note
 
 ```bash
 # voir Chasseur Onirique travailler
-git clone <this-folder> chasseur-onirique && cd chasseur-onirique
+git clone https://github.com/El-hadj10/Chasseur_Onirique.git chasseur-onirique
+cd chasseur-onirique
 npm install
 npm run demo
 ```
