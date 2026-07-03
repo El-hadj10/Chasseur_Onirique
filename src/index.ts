@@ -18,14 +18,7 @@
 import { Orchestrator, type OrchestratorReport } from './orchestrator.js';
 import { HeuristicPlanner } from './planner.js';
 import { Logger } from './logger.js';
-
-import { filePicker } from './agents/file_picker.js';
-import { codeSearcher } from './agents/code_searcher.js';
-import { basher } from './agents/basher.js';
-import { researcherWeb } from './agents/researcher_web.js';
-import { researcherDocs } from './agents/researcher_docs.js';
-import { thinker } from './agents/thinker.js';
-import { codeReviewer } from './agents/code_reviewer.js';
+import { createAgentRegistry } from './agents/registry.js';
 
 const DEMO_PROMPT =
   "Refactor the Login component so it becomes unit-testable. Don't break the public API.";
@@ -62,15 +55,7 @@ async function main(): Promise<void> {
   const log = new Logger('cli');
   log.info(`chasseur-onirique v0.2.0 — root: ${args.rootDir}`);
 
-  const agents = new Map<import('./planner.js').AgentName, import('./agents/base.js').Agent<unknown, unknown>>([
-    [filePicker.name, filePicker],
-    [codeSearcher.name, codeSearcher],
-    [basher.name, basher],
-    [researcherWeb.name, researcherWeb],
-    [researcherDocs.name, researcherDocs],
-    [thinker.name, thinker],
-    [codeReviewer.name, codeReviewer],
-  ]);
+  const agents = createAgentRegistry();
 
   const orchestrator = new Orchestrator(agents, {
     rootDir: args.rootDir,
