@@ -1,0 +1,48 @@
+{
+  "name": "chasseur-onirique",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Chasseur Onirique — a miniature multi-agent orchestrator, sibling of the Buffy/Codebuff lineage. El-hadj Ousmane.",
+  "type": "module",
+  "bin": {
+    "chasseur-onirique": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "demo": "bash scripts/demo.sh"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "chalk": "5.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.30",
+    "@vitest/coverage-istanbul": "^2.1.9",
+    "@vitest/coverage-v8": "^2.1.9",
+    "tsx": "4.7.1",
+    "typescript": "5.4.2",
+    "vitest": "^2.1.9"
+  },
+  "keywords": [
+    "agent",
+    "orchestrator",
+    "multi-agent",
+    "cli",
+    "chasseur-onirique",
+    "chasseur",
+    "onirique",
+    "el-hadj",
+    "buffy",
+    "codebuff"
+  ],
+  "author": "El-hadj Ousmane",
+  "license": "MIT"
+}
