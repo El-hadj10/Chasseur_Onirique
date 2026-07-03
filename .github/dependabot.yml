@@ -1,0 +1,40 @@
+# Dependabot — Chasseur Onirique
+# Keeps the lockfile alive and the dependency tree auditable.
+# All updates flow through PRs reviewed by the existing CI gate
+# (tsc + vitest 80/80/75/80 + build).
+
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "automated"
+    # Group related packages so a single PR handles a coherent bump.
+    groups:
+      types-and-runtime:
+        applies-to: version-updates
+        patterns:
+          - "@types/*"
+          - "tsx"
+      vitest-and-coverage:
+        applies-to: version-updates
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+      typescript:
+        applies-to: version-updates
+        patterns:
+          - "typescript"
+    # Don't bump chalk or the type packages past major; review majors manually.
+    ignore:
+      - dependency-name: "chalk"
+        update-types: ["version-update:semver-major"]
