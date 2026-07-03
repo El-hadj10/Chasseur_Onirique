@@ -338,6 +338,16 @@ with a divergence-detection prompt, then writes the report to
 `npm run self-check` to surface places where the docs have drifted from
 the code.
 
+A subtle implementation gotcha: the JSDoc must avoid `**/` patterns
+(two stars then a slash), because esbuild interprets `**/` as a JSDoc
+comment terminator (since `*/` ends a comment, and `**` + `/` contains
+it). The first version of this script hit a silent exit 1 with no
+output because of this — the file would parse, the JSDoc would end
+prematurely, and the rest of the line would be treated as code, but
+the error would only surface when esbuild re-tokenized from a path it
+hadn’t seen before. The current version phrases the path glob
+descriptions to avoid the pattern.
+
 ---
 
 ## The reading order, condensed
