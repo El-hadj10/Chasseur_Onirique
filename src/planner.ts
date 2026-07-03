@@ -27,7 +27,8 @@ export type AgentName =
   | 'researcher_web'
   | 'researcher_docs'
   | 'thinker'
-  | 'code_reviewer';
+  | 'code_reviewer'
+  | 'pentest';
 
 export class Plan {
   constructor(public readonly steps: PlanStep[]) {}

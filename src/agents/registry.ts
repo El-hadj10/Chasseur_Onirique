@@ -23,6 +23,7 @@ import { researcherWeb } from './researcher_web.js';
 import { researcherDocs } from './researcher_docs.js';
 import { thinker } from './thinker.js';
 import { codeReviewer } from './code_reviewer.js';
+import { pentest } from './pentest.js';
 
 export function createAgentRegistry(): Map<AgentName, Agent<unknown, unknown>> {
   return new Map<AgentName, Agent<unknown, unknown>>([
@@ -33,5 +34,6 @@ export function createAgentRegistry(): Map<AgentName, Agent<unknown, unknown>> {
     [researcherDocs.name, researcherDocs],
     [thinker.name, thinker],
     [codeReviewer.name, codeReviewer],
+    [pentest.name, pentest],
   ]);
 }

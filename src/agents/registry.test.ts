@@ -4,9 +4,9 @@ import { createAgentRegistry } from './registry.js';
 import type { Agent } from './base.js';
 
 describe('createAgentRegistry', () => {
-  it('returns a registry with exactly 7 agents', () => {
+  it('returns a registry with exactly 8 agents', () => {
     const reg = createAgentRegistry();
-    expect(reg.size).toBe(7);
+    expect(reg.size).toBe(8);
   });
 
   it('contains every name from the AgentName union', () => {
@@ -17,6 +17,7 @@ describe('createAgentRegistry', () => {
       'code_reviewer',
       'code_searcher',
       'file_picker',
+      'pentest',
       'researcher_docs',
       'researcher_web',
       'thinker',
@@ -38,6 +39,6 @@ describe('Agent type-shape compatibility', () => {
   it('is assignable to Map<AgentName, Agent<unknown, unknown>>', () => {
     // Compile-time check (the `as` would fail TS if the shapes diverged).
     const reg: Map<string, Agent<unknown, unknown>> = createAgentRegistry();
-    expect(reg.size).toBe(7);
+    expect(reg.size).toBe(8);
   });
 });

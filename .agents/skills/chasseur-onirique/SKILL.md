@@ -69,7 +69,7 @@ src/orchestrator.ts   — the single conductor (run, runStep, synthesize)
 src/context.ts        — rolling window + scoped notes
 src/planner.ts        — prompt → PlanStep[]
 src/skills.ts         — loads .agents/skills/**/SKILL.md
-src/agents/           — 8 files: base + 7 specialized agents
+src/agents/           — 9 files: base + 8 specialized agents
 src/tools/            — 10 files: _schema + 9 verbs
 .agents/skills/       — 3 SKILL.md files: this one, research-tactics, refactor-tactics
 ```
@@ -85,8 +85,25 @@ src/tools/            — 10 files: _schema + 9 verbs
 
 1. Add the name to `AgentName` in `src/planner.ts`.
 2. Create `src/agents/<name>.ts` exporting `const <name>: Agent<…>`.
-3. Register it in the `Map` in `src/index.ts`.
+3. Register it in the `Map` in `src/agents/registry.ts`.
 4. Write `src/agents/<name>.test.ts` first — the test is the spec.
+
+## The 8th agent: pentest
+
+A `pentest` agent ships as of v0.3.0. It runs four sub-checks **in parallel**
+inside a single agent and streams findings to `docs/pentest/<ISO>.ndjson`
+(append-only, one line per finding) + a final `docs/pentest/<ISO>.md` summary.
+The "au fur et à mesure" feel comes from `Promise.allSettled` + a synchronous
+`reportFinding` callback that appends to the NDJSON file and logs to stdout
+the moment each finding is discovered.
+
+The sub-checks are read-only by design. The network probe is gated by
+`CHASSEUR_ONIRIQUE_PENTEST_NET=1` (off by default). Secret matches are
+mandatorily pre-redacted inside the sub-check — the agent's own log never
+sees a plaintext secret.
+
+Use `npm run pentest` to run it standalone (one step, just the pentest
+agent), or include `pentest` in a custom plan via the orchestrator's CLI.
 
 ## When to add a new tool
 

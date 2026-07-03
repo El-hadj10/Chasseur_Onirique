@@ -17,7 +17,8 @@
     "coverage": "vitest run --coverage",
     "demo": "bash scripts/demo.sh",
     "snapshot": "tsx scripts/snapshot-session.ts",
-    "self-check": "tsx scripts/self-check.ts"
+    "self-check": "tsx scripts/self-check.ts",
+    "pentest": "tsx scripts/pentest.ts"
   },
   "engines": {
     "node": ">=18"

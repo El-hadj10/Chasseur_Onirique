@@ -26,7 +26,7 @@ orchestrator, prints the report. Read this first to see the moving parts in
 ~60 lines.
 
 Key line: `const agents = createAgentRegistry();` — the only place where the
-7-agent Map is instantiated for the CLI. There is no second copy.
+8-agent Map is instantiated for the CLI. There is no second copy.
 
 ### `scripts/demo.sh` — the canonical demo
 
@@ -105,7 +105,7 @@ Three levels: `info`, `ok`, `debug`. Strips ANSI in non-TTY. Not much else.
 
 ---
 
-## 3. The 7 agents — what the orchestrator can call
+## 3. The 8 agents — what the orchestrator can call
 
 Each agent is a 30–100 line file with one exported object implementing
 `Agent<Input, Output>`. The contract is in `src/agents/base.ts` — read that
@@ -129,8 +129,8 @@ input.
 
 ### `src/agents/registry.ts` — the factory
 
-The single source of truth. `createAgentRegistry()` returns the 7-agent
-Map. Adding an 8th agent means: (1) create the file, (2) add one line here,
+The single source of truth. `createAgentRegistry()` returns the 8-agent
+Map. Adding a 9th agent means: (1) create the file, (2) add one line here,
 (3) update the test in `src/agents/registry.test.ts`. The CLI and the
 snapshot tool both pull from this — no duplication.
 
@@ -174,6 +174,61 @@ parent conversation, which is how "Plan → reflect" actually works.
 The safety net. Runs after a change is applied. Returns a verdict
 (approve/request-changes) plus a list of issues. The orchestrator logs it
 but does not block on it — the human is the final gate.
+
+#### `src/agents/pentest.ts` — the 8th agent (v0.3.0)
+
+A full-stack security sweep. Where the other 7 agents are small and
+single-purpose, the pentest agent is a coordinator: it runs four
+**sub-checks in parallel** inside a single agent and streams findings to
+disk as they arrive.
+
+The four sub-checks (in `src/agents/pentest/checks/`):
+- **`sast.ts`** — pattern-based code scan over all source files. Catches
+  `eval`, `new Function`, `child_process.exec(…)` (shell spawns), weak
+  crypto (`md5`/`sha1`), hardcoded IPs, `console.*` in `src/`, and
+  `TODO`/`FIXME`/`HACK` markers. One filesystem walk, N regex passes —
+  no shell exec, no `grep` spawns.
+- **`deps.ts`** — parses `package.json` and flags a curated list of
+  deprecated packages (`request`, `moment`, `tslint`, …), suspicious
+  version ranges (`*`, `latest`), and pre-1.0 majors.
+- **`secrets.ts`** — regex scan with mandatory pre-redaction. Catches
+  AWS access keys, GitHub PATs (classic and fine-grained), GitHub
+  OAuth, Slack tokens, PEM private keys, JWTs, and generic `api_key`
+  assignments. The cardinal rule: every match is masked inside the
+  sub-check before it ever reaches the report. The agent's own log
+  never sees a plaintext secret.
+- **`network.ts`** — localhost listening-port scan via `netstat -an`
+  (cross-platform: macOS, Linux, BSD). Gated by
+  `CHASSEUR_ONIRIQUE_PENTEST_NET=1` (off by default, mirrors the
+  `CHASSEUR_ONIRIQUE_LIVE` pattern). If `netstat` itself is missing,
+  the check degrades to an `info`-level "skipped" finding and the rest
+  of the report still works.
+
+The streaming mechanism is the interesting part. The orchestrator's
+`runStep` does `Promise.all` over the step's `suggestedAgents` and
+expects a final `AgentOutput`. So we can't push findings *out* of an
+agent mid-flight — but we can push them *down to disk*. The agent
+exposes a synchronous `reportFinding(f)` callback to each sub-check.
+The callback does three things: (a) push to the in-memory `findings`
+array, (b) append one JSON line to `docs/pentest/<ISO>.ndjson`, (c) log
+to stdout with a severity tag. The user sees findings scroll past in
+real time even though the orchestrator only sees the final
+`AgentOutput` at the end. The MD summary is rewritten at the end
+(NOT appended during, to avoid races between the four sub-checks).
+
+The agent respects `ctx.dryRun`: in dry-run mode, the checks still run
+(they are read-only by design) but no files are written. Findings go
+to the logger only.
+
+Why a single agent instead of four agents at the orchestrator level?
+The 4 sub-checks share one NDJSON file and one summary; that
+coordination belongs inside one agent. Pushing them up to the planner
+would dilute the `AgentName` union with four hyper-specific security
+scouts and complicate the standalone CLI.
+
+Use `npm run pentest` to run it standalone (one step, just the pentest
+agent). The CLI exits 0 (clean) or 1 (at least one critical/high
+finding). The full NDJSON + per-run MD go to `docs/pentest/`.
 
 ---
 
@@ -301,7 +356,7 @@ regression for the frontmatter-anchor gotcha.
 
 ### `src/agents/registry.test.ts`
 
-4 tests: pins the 7-agent shape, the dry-run default, and the `live` test
+4 tests: pins the 8-agent shape, the dry-run default, and the `live` test
 seam. This is the only test that breaks when a new agent is added — by
 design.
 
@@ -338,15 +393,29 @@ with a divergence-detection prompt, then writes the report to
 `npm run self-check` to surface places where the docs have drifted from
 the code.
 
-A subtle implementation gotcha: the JSDoc must avoid `**/` patterns
-(two stars then a slash), because esbuild interprets `**/` as a JSDoc
-comment terminator (since `*/` ends a comment, and `**` + `/` contains
-it). The first version of this script hit a silent exit 1 with no
-output because of this — the file would parse, the JSDoc would end
-prematurely, and the rest of the line would be treated as code, but
-the error would only surface when esbuild re-tokenized from a path it
-hadn’t seen before. The current version phrases the path glob
-descriptions to avoid the pattern.
+A subtle implementation gotcha: the JSDoc must avoid the path-glob
+pattern that looks like the JSDoc close marker (two stars then a slash).
+esbuild interprets that pattern as a JSDoc comment terminator (since
+`*/` ends a comment, and the two-stars-then-slash contains it). The
+first version of this script hit a silent exit 1 with no output because
+of this — the file would parse, the JSDoc would end prematurely, and
+the rest of the line would be treated as code, but the error would
+only surface when esbuild re-tokenized from a path it hadn't seen
+before. The current version phrases the path glob descriptions to
+avoid the pattern.
+
+### `scripts/pentest.ts` (v0.3.0)
+
+**The security CLI.** Mirrors the self-check pattern: builds a custom
+one-step `Plan` whose `suggestedAgents` is just `['pentest']`, runs the
+orchestrator, writes a top-level summary to `docs/pentest/summary.md`,
+and exits 0 (no critical/high findings) or 1 (at least one critical
+or high finding). The per-run NDJSON + MD are written by the pentest
+agent itself; this script adds the cross-run summary.
+
+The default invocation (`npm run pentest`) runs the SAST, deps, and
+secrets checks. To also enable the localhost network probe, set
+`CHASSEUR_ONIRIQUE_PENTEST_NET=1` in the environment.
 
 ---
 
