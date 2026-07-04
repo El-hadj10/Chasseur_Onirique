@@ -1,7 +1,9 @@
 # Agents
 
-Seven specialized sub-agents. Each is a single TypeScript file that exports an
-`Agent<TIn, TOut>` named after its role.
+Eight specialized sub-agents (the registry and the base are utilities, not
+callable agents — `base.ts` provides the contract, `registry.ts` is the
+central `AgentName` union). Each is a single TypeScript file that exports an
+`Agent<TIn, TOut>` named after its role. `pentest` was added in v0.3.0.
 
 > _Chasseur Onirique — by El-hadj Ousmane._
 
@@ -14,6 +16,7 @@ Seven specialized sub-agents. Each is a single TypeScript file that exports an
 | `researcher_docs`| Doc URLs for known libraries                        | `researcher_docs:libraries`| no (deterministic stub) |
 | `thinker`        | Synthesize shared notes → recommendation + tradeoffs| `thinker:synthesis`        | no (pure transform)    |
 | `code_reviewer`  | Scan recently modified files for anti-patterns     | `code_reviewer:findings`, `code_reviewer:blockers` | yes (disk read, last 10 min only) |
+| `pentest`        | NDJSON finding emitter (dedup, grouping, `--fix` patches) | `pentest:findings`, `pentest:summary` | no (pure transform over source) — also invokable as `npm run pentest` |
 
 ---
 
@@ -39,7 +42,7 @@ Agent<{ prompt: string; step: string }, TOut>
 
 1. Create `src/agents/<name>.ts`.
 2. Export `Agent<{ prompt: string; step: string }, TOut>` with a unique `AgentName`.
-3. Register it in `src/agents/<file>` → `index.ts` (one line).
+3. Register it in `src/agents/registry.ts` (the central `AgentName` union + descriptor map, re-exported by `src/index.ts`).
 4. Add the name to the `AgentName` union in `src/planner.ts`.
 
 That's it. The orchestrator picks it up from the registry automatically.

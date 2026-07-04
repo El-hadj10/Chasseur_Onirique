@@ -1,6 +1,6 @@
 {
   "name": "chasseur-onirique",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "private": true,
   "description": "Chasseur Onirique — a miniature multi-agent orchestrator, sibling of the Buffy/Codebuff lineage. El-hadj Ousmane.",
   "type": "module",

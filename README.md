@@ -7,10 +7,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue.svg)](./tsconfig.json)
 [![Node](https://img.shields.io/badge/Node-%E2%89%A518-green.svg)](./package.json)
-[![Tests](https://img.shields.io/badge/tests-56%2F56-brightgreen.svg)](./src)
+[![Tests](https://img.shields.io/badge/tests-97%2F97-brightgreen.svg)](./src)
 [![Coverage](https://img.shields.io/badge/coverage-%E2%89%A580%25-blue.svg)](./vitest.config.ts)
 [![Made by Buffy](https://img.shields.io/badge/parent-Buffy-purple.svg)](https://codebuff.com)
-[![Project: Chasseur Onirique](https://img.shields.io/badge/chasseur--onirique-v0.2.0-orange.svg)](./package.json)
+[![Project: Chasseur Onirique](https://img.shields.io/badge/chasseur--onirique-v0.3.1-orange.svg)](./package.json)
 
 ---
 
@@ -28,7 +28,7 @@ Le bureau contient déjà 32 dossiers. Chacun a sa personnalité : `Ware-Defende
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-Sept agents spécialisés, un seul *conductor*. Pas d'API key requise, pas de dépendance lourde : juste le pattern d'orchestration, en clair.
+Huit agents spécialisés, un seul *conductor* (le registre et la base sont des utilitaires, pas des agents appelables). Pas d'API key requise, pas de dépendance lourde : juste le pattern d'orchestration, en clair.
 
 ---
 
@@ -109,6 +109,8 @@ npx tsx src/index.ts --demo
 
 ### Une session — capturée d'un vrai `npm run demo`
 
+
+> Sortie capturée à la v0.2.0 (conservée à titre historique). La démo actuelle à v0.3.1 produit un log de structure identique, avec 8 agents dans le registre au lieu de 7.
 ```
 [demo] running with local tsx
 2026-07-03T17:24:41.622Z [INF] cli chasseur-onirique v0.2.0 — root: /home/el-hadj-ousmane/Bureau/chasseur-onirique
@@ -156,7 +158,7 @@ duration:     359 ms
 | **Zero dépendance runtime** | seulement `chalk`. Tout le reste est `node:fs`, `node:cp` |
 | **Observable**              | chaque décision apparaît dans un `LogEvent` horodaté     |
 | **Composable**              | ajoute ton agent en 1 fichier + 1 ligne dans `index.ts`  |
-| **Testable**                | 56 tests unitaires, dry-run par défaut, sandboxing         |
+| **Testable**                | 97 tests unitaires, dry-run par défaut, sandboxing         |
 | **Documenté**               | ce README + `ARCHITECTURE.md` + `docs/*.md`              |
 | **Sécurisé**                | `basher` refuse `rm -rf /`, `curl \| sh`, `sudo`…        |
 | **Reproduction fidèle**     | suit les 4 lois de l'orchestrateur parent (voir ARCHI)   |

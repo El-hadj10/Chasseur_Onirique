@@ -19,7 +19,7 @@ Codified here so future contributors don't drift:
 4. **No agent calls another agent.**
    There is no `agent.spawn()` API. Cross-agent synthesis is the orchestrator's job. Depth is 1, by construction.
 
-> _These four laws trace their lineage to the Buffy orchestrator (codebuff.com / Buffy). Chasseur Onirique is the local, runnable distillation: same pattern, zero API key, seven deterministic agents._
+> _These four laws trace their lineage to the Buffy orchestrator (codebuff.com / Buffy). Chasseur Onirique is the local, runnable distillation: same pattern, zero API key, eight agents (the original seven plus `pentest`, added in v0.3.0)._
 
 ---
 
@@ -105,7 +105,9 @@ src/
 │   ├── researcher_web.ts Web-shaped scout (deterministic stub)
 │   ├── researcher_docs.ts Doc-URL manifest per known library
 │   ├── thinker.ts        Cross-step synthesis (pure transform)
-│   └── code_reviewer.ts  Anti-pattern scan on recently-touched files
+│   ├── code_reviewer.ts  Anti-pattern scan on recently-touched files
+│   ├── pentest.ts        NDJSON finding emitter (invoked via `npm run pentest` or the registry)
+│   └── registry.ts       Central agent registry + `AgentName` union
 └── tools/
     ├── _schema.ts        ToolDescriptor + JSONSchema
     ├── read_files.ts     Reads up to 64 KiB per file

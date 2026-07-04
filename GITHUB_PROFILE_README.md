@@ -41,11 +41,9 @@
 
 | Aspect | Détail |
 | :----- | :----- |
-| 🎯 **Rôle** | Découper une intention en pas, déléguer chaque pas à l'agent qui sait le faire, recoller les pièces dans un rapport. |
-| 🧩 **Agents** | `file_picker` · `code_searcher` · `basher` (dry-run par défaut) · `researcher_web` · `researcher_docs` · `thinker` · `code_reviewer` |
-| 📏 **Lignes de code** | ~1 500 lignes de TypeScript (hors tests) |
-| 🧪 **Tests** | **59/59 verts** · 8 fichiers de test · `npm test` |
-| 🛡️ **Sécurité** | `basher` refuse `rm -rf /`, `curl \| sh`, `sudo`, `dd if=…` — deny-list à 3 patterns |
+| 🎯 **Rôle** | Découper une intention en pas, déléguer chaque pas à l'agent qui sait le faire, recoller les pièces dans un rapport. || 🧩 **Agents**       | `file_picker` · `code_searcher` · `basher` (dry-run par défaut) · `researcher_web` · `researcher_docs` · `thinker` · `code_reviewer` · `pentest` (v0.3+) |
+| 📏 **Lignes de code** | ~3 369 lignes de TypeScript (hors tests) || 🧪 **Tests**        | **97/97 verts** · 11 fichiers de test · `npm test` |
+| 🛡️ **Sécurité** | `basher` refuse `rm -rf /`, `curl \| sh`, `sudo`, `dd if=…` — deny-list à 7 patterns |
 | 📊 **Couverture** | Gate istanbul à 80/80/75/80 sur le scope post-exclude |
 | 🏗️ **CI** | GitHub Actions · Node 18 + 20 · typecheck + tests + coverage + build |
 | 📜 **Lignée** | Distillation locale de l'orchestrateur **Buffy** (codebuff.com) — même pattern, zero clé d'API |
@@ -181,6 +179,8 @@ CHASSEUR_ONIRIQUE_LIVE=1 npx tsx src/index.ts "run typecheck and tests"
 
 ## 🧪 Sortie `npm run demo` — verbatim
 
+
+> Sortie capturée à la v0.2.0 (conservée à titre historique). La démo actuelle à v0.3.1 produit un log de structure identique, avec 8 agents dans le registre au lieu de 7.
 ```
 [demo] running with local tsx
 2026-07-03T17:24:41.622Z [INF] cli chasseur-onirique v0.2.0 — root: /home/el-hadj-ousmane/Bureau/chasseur-onirique
@@ -237,7 +237,9 @@ src/
 │   ├── researcher_web.ts Web-shaped scout (deterministic stub)
 │   ├── researcher_docs.ts Doc-URL manifest per known library
 │   ├── thinker.ts        Cross-step synthesis (pure transform)
-│   └── code_reviewer.ts  Anti-pattern scan on recently-touched files
+│   ├── code_reviewer.ts  Anti-pattern scan on recently-touched files
+│   ├── pentest.ts        NDJSON finding emitter (invoked via `npm run pentest` or the registry)
+│   └── registry.ts       Central agent registry + `AgentName` union
 └── tools/
     ├── _schema.ts        ToolDescriptor + JSONSchema
     ├── read_files.ts     Reads up to 64 KiB per file
@@ -276,6 +278,8 @@ src/
 - [x] **v0.1** — 7 agents · 56 tests · deny-list safety · CI · MIT
 - [x] **v0.2** — Rebrand `codebuff-core` → `chasseur-onirique` · env var `CHASSEUR_ONIRIQUE_LIVE` · credit headers · coverage gate istanbul
 - [x] **v0.2** — Profile README + push initial vers GitHub
+- [x] **v0.3.0** — `pentest` agent (NDJSON findings, dedup, grouping) — runnable via `npm run pentest` or the registry
+- [x] **v0.3.1** — `pentest --fix` mode proposes patches (diffs + manual steps)
 - [ ] **v0.3** — Real LLM plug-in for planner (replace `HeuristicPlanner` with model call, swappable)
 - [ ] **v0.3** — MCP bridge for tools (drop-in compatibility with the existing `ToolDescriptor` shape)
 - [ ] **v0.4** — Streaming agent outputs (SSE + chunked notes merge)
@@ -300,7 +304,7 @@ src/
 <br/>
 
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
-![Tests](https://img.shields.io/badge/Tests-59%2F59-brightgreen?style=for-the-badge&logo=vitest&logoColor=white)
+![Tests](https://img.shields.io/badge/Tests-97%2F97-brightgreen?style=for-the-badge&logo=vitest&logoColor=white)
 ![Coverage](https://img.shields.io/badge/Coverage-%E2%89%A580%25-blue?style=for-the-badge&logo=istanbul&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![Node](https://img.shields.io/badge/Node-%E2%89%A518-green.svg?style=for-the-badge&logo=node.js&logoColor=white)
