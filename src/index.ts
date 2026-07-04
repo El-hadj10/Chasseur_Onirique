@@ -12,7 +12,7 @@
  *   chasseur-onirique --demo
  *
  * No API key required. Agents are heuristic but the *plumbing* is faithful
- * to the Buffy parent orchestrator: Plan → fan-out agents → merge notes → reflect.
+ * to the core orchestration pattern: Plan → fan-out agents → merge notes → reflect.
  */
 
 import { Orchestrator, type OrchestratorReport } from './orchestrator.js';

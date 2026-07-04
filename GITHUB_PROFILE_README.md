@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0a0820,30:0f0a30,60:0a1a3a,100:0a0a1f&height=240&section=header&text=CHASSEUR%20ONIRIQUE&fontSize=62&fontColor=c8a84b&animation=fadeIn&fontAlignY=36&desc=Multi--Agent%20Orchestration%20%C2%B7%20Zero--API%20%C2%B7%20Sibling%20of%20Buffy&descAlignY=62&descSize=15&descColor=88aacc" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0a0820,30:0f0a30,60:0a1a3a,100:0a0a1f&height=240&section=header&text=CHASSEUR%20ONIRIQUE&fontSize=62&fontColor=c8a84b&animation=fadeIn&fontAlignY=36&desc=Multi--Agent%20Orchestration%20%C2%B7%20Zero--API%20%C2%B7%20Deterministic&descAlignY=62&descSize=15&descColor=88aacc" width="100%" />
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=18&duration=2800&pause=900&color=C8A84B&center=true&vCenter=true&multiline=true&width=720&height=60&lines=Plan+%E2%86%92+Fan-out+%E2%86%92+Merge+%E2%86%92+Reflect;Inspired+by+Buffy+%E2%9A%96%EF%B8%8F+%C2%B7+by+El-hadj+Ousmane)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=18&duration=2800&pause=900&color=C8A84B&center=true&vCenter=true&multiline=true&width=720&height=60&lines=Plan+%E2%86%92+Fan-out+%E2%86%92+Merge+%E2%86%92+Reflect;Zero+deps+%E2%9A%96%EF%B8%8F+%C2%B7+by+El-hadj+Ousmane)](https://git.io/typing-svg)
 
 <br/>
 
@@ -20,9 +20,9 @@
 ╔═══════════════════════════════════════════════════════════════╗
 ║  🌌  CHASSEUR ONIRIQUE  —  El-hadj Ousmane                  ║
 ║  ⚙️   Multi-agent orchestration CLI (TypeScript pur)         ║
-║  🛡️  Sibling of Buffy · zero API key · 7 agents déterministes ║
+║  🛡️  Zero API key · 7 agents déterministes                  ║
 ║  📜  Plan → fan-out → merge notes → reflect                  ║
-║  ✨  Inspiré de Buffy, l'orchestrateur parent                ║
+║  ✨  Auto-suffisant · multi-agent pur · zero dépendance      ║
 ╚═══════════════════════════════════════════════════════════════╝
 ```
 
@@ -46,7 +46,7 @@
 | 🛡️ **Sécurité** | `basher` refuse `rm -rf /`, `curl \| sh`, `sudo`, `dd if=…` — deny-list à 7 patterns |
 | 📊 **Couverture** | Gate istanbul à 80/80/75/80 sur le scope post-exclude |
 | 🏗️ **CI** | GitHub Actions · Node 18 + 20 · typecheck + tests + coverage + build |
-| 📜 **Lignée** | Distillation locale de l'orchestrateur **Buffy** (codebuff.com) — même pattern, zero clé d'API |
+| 📜 **Lignée** | Auto-suffisant · aucune dépendance externe · zéro clé d'API |
 | 🪪 **License** | MIT — by **El-hadj Ousmane** |
 
 ---
@@ -166,14 +166,14 @@ CHASSEUR_ONIRIQUE_LIVE=1 npx tsx src/index.ts "run typecheck and tests"
 
 ---
 
-## 📜 Les 4 Lois (inspiré de Buffy)
+## 📜 Les 4 Lois
 
 1. **Le parent ne garde pas toute l'historique.** `Context` rolls forward ; evicted turns get summarized *deterministically* (`Context.evictOldest`).
 2. **Commiter avant d'agir.** `HeuristicPlanner.makePlan(prompt)` est la seule façon sanctionnée d'aller d'un prompt à des steps. Pas d'ad-hoc prompt → action.
 3. **Agents purs** — `Agent.run(input, ctx)` reçoit un *snapshot*. Pas de mutation du parent `Context`. Renvoie `AgentOutput` ; l'orchestrator merge les notes.
 4. **Aucun agent n'appelle un agent.** Pas d'API `agent.spawn()`. La synthèse inter-agents est le job de l'orchestrator. Depth = 1, par construction.
 
-> _Ces 4 lois tracent leur lignée à l'orchestrateur **Buffy** (codebuff.com / Buffy). Chasseur Onirique est la distillation locale, runnable : même pattern, zero API key, sept agents déterministes._
+> _Ces 4 lois sont les invariants du projet. Chasseur Onirique est auto-suffisant : zero API key, sept agents déterministes._
 
 ---
 
@@ -276,7 +276,7 @@ src/
 ## 🗺️ Roadmap 2026
 
 - [x] **v0.1** — 7 agents · 56 tests · deny-list safety · CI · MIT
-- [x] **v0.2** — Rebrand `codebuff-core` → `chasseur-onirique` · env var `CHASSEUR_ONIRIQUE_LIVE` · credit headers · coverage gate istanbul
+- [x] **v0.2** — Rebrand → `chasseur-onirique` · env var `CHASSEUR_ONIRIQUE_LIVE` · credit headers · coverage gate istanbul
 - [x] **v0.2** — Profile README + push initial vers GitHub
 - [x] **v0.3.0** — `pentest` agent (NDJSON findings, dedup, grouping) — runnable via `npm run pentest` or the registry
 - [x] **v0.3.1** — `pentest --fix` mode proposes patches (diffs + manual steps)
@@ -293,7 +293,7 @@ src/
 
 **El-hadj Ousmane** — [github.com/El-hadj10](https://github.com/El-hadj10)
 
-> _"Spécialisé en automatisation, IA locale et orchestration. Créateur de Chasseur Onirique — la distillation locale du pattern Buffy."_
+> _"Spécialisé en automatisation, IA locale et orchestration. Créateur de Chasseur Onirique — orchestrateur multi-agent auto-suffisant."_
 
 ---
 
@@ -308,7 +308,6 @@ src/
 ![Coverage](https://img.shields.io/badge/Coverage-%E2%89%A580%25-blue?style=for-the-badge&logo=istanbul&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![Node](https://img.shields.io/badge/Node-%E2%89%A518-green.svg?style=for-the-badge&logo=node.js&logoColor=white)
-![Sibling of Buffy](https://img.shields.io/badge/Lineage-Buffy-6633cc?style=for-the-badge&logo=ghost&logoColor=white)
 ![Multi-Agent](https://img.shields.io/badge/Multi--Agent-00d4ff?style=for-the-badge&logo=apacheairflow&logoColor=white)
 ![Zero API Key](https://img.shields.io/badge/Zero_API_Key-00cc66?style=for-the-badge&logo=key&logoColor=white)
 

@@ -6,8 +6,7 @@
 /**
  * Planner.
  *
- * Chasseur Onirique's law #2 (lineage: Buffy orchestrator): before any action,
- * commit to a plan.
+ * Chasseur Onirique's law #2: before any action, commit to a plan.
  * The plan is a sequence of *codeless* TODOs that the orchestrator walks through.
  * The orchestrator does NOT decide what to do next — it executes the plan.
  */
@@ -100,7 +99,7 @@ export class HeuristicPlanner implements PlannerStrategy {
       {
         id: 4,
         title: 'Faire relire et vérifier',
-        rationale: 'Une seconde paire d’yeux — c’est Buffy.',
+        rationale: 'Une seconde paire d’yeux — indispensable avant tout commit.',
         status: 'pending',
         suggestedAgents: ['code_reviewer'],
       },

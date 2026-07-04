@@ -6,8 +6,8 @@
 /**
  * Context manager.
  *
- * Chasseur Onirique's law #1 (lineage: Buffy orchestrator): the parent agent
- * does not keep full conversation history forever.
+ * Chasseur Onirique's law #1: the parent agent does not keep full
+ * conversation history forever.
  * We keep a rolling window of recent messages and a deterministic summary of evicted turns.
  * Specialized sub-agents receive a *snapshot* — they don't pollute the parent context.
  *

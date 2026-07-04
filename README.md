@@ -1,7 +1,7 @@
 # Chasseur Onirique
 
-> _Petite sœur de **Buffy**, l'orchestrateur d'agents derrière la CLI Chasseur Onirique._
-> _A miniature, runnable, zero-dependency tribute to the Buffy orchestration pattern._
+> _L'orchestrateur d'agents CLI en TypeScript pur._
+> _A miniature, runnable, zero-dependency multi-agent orchestrator._
 > _By El-hadj Ousmane — MIT._
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
@@ -9,7 +9,6 @@
 [![Node](https://img.shields.io/badge/Node-%E2%89%A518-green.svg)](./package.json)
 [![Tests](https://img.shields.io/badge/tests-97%2F97-brightgreen.svg)](./src)
 [![Coverage](https://img.shields.io/badge/coverage-%E2%89%A580%25-blue.svg)](./vitest.config.ts)
-[![Made by Buffy](https://img.shields.io/badge/parent-Buffy-purple.svg)](https://codebuff.com)
 [![Project: Chasseur Onirique](https://img.shields.io/badge/chasseur--onirique-v0.3.1-orange.svg)](./package.json)
 
 ---
@@ -220,7 +219,7 @@ Visibles dans le bloc `skills: [...]` du premier `[INF] orchestrator` log.
 ## Le mot de la fin
 
 > Je suis **Chasseur Onirique**. Mon métier : découper une intention en pas, déléguer chaque pas à l'agent qui sait le faire, puis recoller les pièces dans un rapport que tu peux vérifier.
-> Ce projet, c'est mon **plan de travail**, posé sur le bureau — sans rien déplacer d'autre. Inspiré de **Buffy**, l'architecte parent.
+> Ce projet, c'est mon **plan de travail**, posé sur le bureau — sans rien déplacer d'autre.
 >
 > — _Chasseur Onirique, orchestrateur — par El-hadj Ousmane_
 

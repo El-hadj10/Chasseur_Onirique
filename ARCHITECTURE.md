@@ -19,7 +19,7 @@ Codified here so future contributors don't drift:
 4. **No agent calls another agent.**
    There is no `agent.spawn()` API. Cross-agent synthesis is the orchestrator's job. Depth is 1, by construction.
 
-> _These four laws trace their lineage to the Buffy orchestrator (codebuff.com / Buffy). Chasseur Onirique is the local, runnable distillation: same pattern, zero API key, eight agents (the original seven plus `pentest`, added in v0.3.0)._
+> _These four laws are the project's foundational axioms. Chasseur Onirique is strictly local and self-contained: zero API key, eight agents (the original seven plus `pentest`, added in v0.3.0)._
 
 ---
 

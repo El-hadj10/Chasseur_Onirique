@@ -24,7 +24,7 @@ When the orchestrator's planner sees the Chasseur Onirique project name in a pro
 3. **Agents are pure relative to the parent.** They receive a *snapshot*; they do not mutate the parent `Context`. They return `AgentOutput`; the orchestrator merges notes.
 4. **No agent calls another agent.** Depth is 1, by construction. The orchestrator does cross-agent synthesis.
 
-> _Lineage: these four laws trace to the Buffy orchestrator (codebuff.com). Chasseur Onirique is the local, runnable distillation._
+> _These four laws are the project's foundational axioms. Chasseur Onirique is strictly local and self-contained. No external orchestrator — the system runs entirely from this skill and the codebase it ships with._
 
 ## Header convention (mandatory for new files)
 
@@ -78,7 +78,7 @@ src/tools/            — 10 files: _schema + 9 verbs
 
 - Do NOT put a comment line above the YAML `---` frontmatter — the `parseFrontMatter` regex is anchored on `^---\s*\n`. The skill's description will silently fall back to `''`.
 - Do NOT lower the vitest coverage thresholds to "make the build pass". If the gate fails, the post-exclude scope is missing a file you should add to `exclude`, OR you wrote code without tests.
-- Do NOT reintroduce the `codebuff-core` name. The pre-v0.2 era is closed.
+- Do NOT reintroduce the pre-v0.2 working name. The v0.2 rebrand closed that door permanently.
 - Do NOT change `basher` to live-mode by default. The deny-list + dry-run is the safety story.
 
 ## When to add a new agent

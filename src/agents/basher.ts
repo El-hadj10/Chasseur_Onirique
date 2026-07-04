@@ -10,9 +10,9 @@
  * Set the env var `CHASSEUR_ONIRIQUE_LIVE=1` to actually execute.
  * It refuses commands whose argv matches a deny-list.
  *
- * The real Codebuff (Buffy parent product) has a similar guarantee — the
- * parent agent never delegates to a free-form shell. It only delegates to
- * *named* agents.
+ * A robust orchestrator enforces a similar guarantee — the parent agent
+ * never delegates to a free-form shell. It only delegates to *named*
+ * agents registered in the registry.
  */
 
 import { spawnSync } from 'node:child_process';

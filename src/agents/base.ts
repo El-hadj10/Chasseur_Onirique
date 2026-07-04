@@ -11,8 +11,7 @@
  * an AgentOutput. They must NEVER mutate the parent's Context.
  * The orchestrator merges the output's `notes` into the parent.
  *
- * (Lineage: this law traces to the Buffy parent orchestrator; same intent,
- * different artefact.)
+ * (Local invariant — see the four laws in the meta-skill `.agents/skills/chasseur-onirique/SKILL.md`.)
  */
 
 import type { AgentName } from '../planner.js';
