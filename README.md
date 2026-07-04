@@ -15,8 +15,6 @@
 
 ## The hook — Un projet de plus, ou un agent qui orchestre les autres ?
 
-Le bureau contient déjà 32 dossiers. Chacun a sa personnalité : `Ware-Defender` défend, `AI_Nour` raisonne, `Tourabou` lit les signes du ciel. Tous ont un point commun : ils prennent un **but** et produisent une **trace écrite** — code, audit, note astrologique.
-
 `chasseur-onirique`, lui, ne produit rien lui-même. Il **délègue**. Et c'est toute sa raison d'être.
 
 ```
